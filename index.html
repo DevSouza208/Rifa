@@ -3,191 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifa de Natal</title>
     
     <meta property="og:title" content="Rifa de Natal - Ganhe uma Cesta Recheada!">
-    <meta property="og:description" content="Escolha seu número da sorte agora. Apenas R$ 10,00. Sorteio dia 20/12!">
-    <meta property="og:image" content="https://via.placeholder.com/600x300/8b0000/FFD700?text=Rifa+de+Natal"> <meta property="og:type" content="website">
-
-    <title>Rifa de Natal</title>
+    <meta property="og:description" content="Escolha seu número da sorte agora. Apenas R$ 10,00.">
+    <meta property="og:type" content="website">
 
     <style>
-        /* === DESIGN (CSS) === */
         :root {
-            --bg-color: #8b0000; /* Vermelho Natal */
-            --accent-color: #FFD700; /* Dourado */
-            --text-color: #fff;
-            --number-bg: #fff;
-            --number-text: #8b0000;
-            --sold-bg: #4a0404; /* Vermelho bem escuro */
-            --sold-text: #b4b4b4;
+            --bg-color: #8b0000; --accent-color: #FFD700; --text-color: #fff;
+            --number-bg: #fff; --number-text: #8b0000;
+            --sold-bg: #4a0404; --sold-text: #b4b4b4;
             --whatsapp-color: #25D366;
         }
-
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            padding: 20px;
-            padding-bottom: 100px; /* Espaço para o botão flutuante */
+            font-family: 'Arial', sans-serif; background-color: var(--bg-color);
+            color: var(--text-color); display: flex; flex-direction: column;
+            align-items: center; margin: 0; padding: 20px; padding-bottom: 100px;
         }
+        h1 { font-family: 'Georgia', serif; font-size: 3rem; color: var(--accent-color); text-align: center; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .subtitle { margin-bottom: 15px; font-size: 1.1rem; text-align: center; }
+        
+        /* Loading */
+        .loading {
+            border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid var(--accent-color);
+            border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* Cabeçalho */
-        header { text-align: center; width: 100%; max-width: 600px; }
-        h1 {
-            font-family: 'Georgia', serif;
-            font-size: 3rem;
-            color: var(--accent-color);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            margin: 0;
-        }
-        .subtitle { margin-bottom: 15px; font-size: 1.1rem; }
+        /* Info e Progresso */
+        .info-box { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid var(--accent-color); text-align: center; width: 100%; max-width: 400px; }
+        .progress-container { width: 100%; max-width: 600px; background: #4a0404; border-radius: 20px; margin-bottom: 20px; border: 1px solid var(--accent-color); overflow: hidden; }
+        .progress-bar { height: 24px; background: linear-gradient(90deg, #FFD700, #ffeb3b); color: #8b0000; text-align: center; line-height: 24px; font-weight: bold; width: 0%; transition: width 1s; }
 
-        /* Card de Informações */
-        .info-box {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border: 1px solid var(--accent-color);
-            text-align: center;
-        }
+        /* Grid */
+        .grid-container { display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px; max-width: 600px; width: 100%; }
+        @media (max-width: 500px) { .grid-container { grid-template-columns: repeat(5, 1fr); } h1 { font-size: 2.5rem; } }
 
-        /* Barra de Progresso */
-        .progress-container {
-            width: 100%;
-            max-width: 600px;
-            background-color: #4a0404;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            border: 1px solid var(--accent-color);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-        .progress-bar {
-            height: 24px;
-            background: linear-gradient(90deg, #FFD700, #ffeb3b);
-            color: #8b0000;
-            text-align: center;
-            line-height: 24px;
-            font-weight: bold;
-            font-size: 0.85rem;
-            width: 0%;
-            transition: width 1s ease-in-out;
-            white-space: nowrap;
-        }
-
-        /* Legenda */
-        .legend { display: flex; gap: 15px; margin-bottom: 15px; font-size: 0.9rem; justify-content: center; }
-        .legend-item { display: flex; align-items: center; gap: 5px; }
-        .dot { width: 15px; height: 15px; border-radius: 50%; }
-
-        /* Grid dos Números */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 8px;
-            max-width: 600px;
-            width: 100%;
-        }
-        @media (max-width: 500px) {
-            .grid-container { grid-template-columns: repeat(5, 1fr); }
-            h1 { font-size: 2.5rem; }
-        }
-
-        /* Estilo do Botão de Número */
         .number {
-            background-color: var(--number-bg);
-            color: var(--number-text);
-            border-radius: 50%;
-            aspect-ratio: 1 / 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.1rem;
-            cursor: pointer;
-            position: relative;
-            transition: transform 0.2s;
-            user-select: none;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            background: var(--number-bg); color: var(--number-text); border-radius: 50%;
+            aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; cursor: pointer; position: relative; transition: transform 0.2s;
+            user-select: none; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
         }
-        .number:hover:not(.sold) {
-            transform: scale(1.1);
-            border-color: var(--accent-color);
-            z-index: 5;
-        }
-        .number.sold {
-            background-color: var(--sold-bg);
-            color: var(--sold-text);
-            text-decoration: line-through;
-            cursor: help;
-        }
+        .number:hover:not(.sold) { transform: scale(1.1); border-color: var(--accent-color); z-index: 2; }
+        .number.sold { background: var(--sold-bg); color: var(--sold-text); text-decoration: line-through; cursor: help; }
 
-        /* Tooltip (Balão do Nome) */
+        /* Tooltip */
         .tooltip-text {
-            visibility: hidden;
-            width: 120px;
-            background-color: #fff;
-            color: #000;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 10;
-            bottom: 130%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.8rem;
-            text-decoration: none;
-            font-weight: normal;
-            box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
-            pointer-events: none;
+            visibility: hidden; width: 120px; background: #fff; color: #000; text-align: center;
+            border-radius: 6px; padding: 5px; position: absolute; z-index: 10; bottom: 130%;
+            left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s;
+            font-size: 0.8rem; pointer-events: none; font-weight: normal; text-decoration: none;
         }
-        /* Setinha do balão */
-        .tooltip-text::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #fff transparent transparent transparent;
-        }
-        .number:hover .tooltip-text, .number.active .tooltip-text {
-            visibility: visible;
-            opacity: 1;
-        }
+        .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border: 5px solid; border-color: #fff transparent transparent transparent; }
+        .number:hover .tooltip-text, .number.active .tooltip-text { visibility: visible; opacity: 1; }
 
-        /* Botão Flutuante WhatsApp */
+        /* Botão Zap e Footer */
         .fab-whatsapp {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--whatsapp-color);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 100;
-            transition: transform 0.2s;
-            white-space: nowrap;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--whatsapp-color); color: white; padding: 12px 25px; border-radius: 50px;
+            text-decoration: none; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            display: flex; align-items: center; gap: 8px; z-index: 100; white-space: nowrap;
         }
-        .fab-whatsapp:hover { transform: translateX(-50%) scale(1.05); background-color: #1ebe57; }
         .fab-whatsapp svg { width: 20px; height: 20px; fill: white; }
-
+        
+        .legend { display: flex; gap: 15px; margin-bottom: 15px; justify-content: center; font-size: 0.9rem; }
+        .dot { width: 15px; height: 15px; border-radius: 50%; margin-right: 5px; }
         footer { margin-top: 30px; text-align: center; font-size: 0.9rem; opacity: 0.9; }
         .pix-key { background: #fff; color: #000; padding: 4px 8px; border-radius: 4px; font-weight: bold; user-select: all; }
     </style>
@@ -209,15 +91,15 @@
     </div>
 
     <div class="legend">
-        <div class="legend-item"><div class="dot" style="background: var(--number-bg);"></div> Disponível</div>
-        <div class="legend-item"><div class="dot" style="background: var(--sold-bg);"></div> Vendido</div>
+        <div style="display:flex;align-items:center"><div class="dot" style="background: var(--number-bg);"></div> Disponível</div>
+        <div style="display:flex;align-items:center"><div class="dot" style="background: var(--sold-bg);"></div> Vendido</div>
     </div>
 
-    <div class="grid-container" id="rifa-grid">
-        </div>
+    <div id="loading" class="loading"></div>
+    <div class="grid-container" id="rifa-grid"></div>
 
     <footer>
-        <p>Pagamento via Pix: <span class="pix-key" id="pix-display">...</span></p>
+        <p>Pagamento via Pix: <span class="pix-key">(11) 94717-1294</span></p>
     </footer>
 
     <a href="#" class="fab-whatsapp" id="btn-garantir">
@@ -225,65 +107,110 @@
         Garanta seu número
     </a>
 
-    <script src="dados.js"></script>
-
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const grid = document.getElementById('rifa-grid');
-            const totalNumeros = 100;
+        // =====================================================
+        // ⚙️ CONFIGURAÇÕES DA RIFA
+        // =====================================================
+        
+        // Link Mágico da sua Planilha (Já configurado)
+        const LINK_PLANILHA = "https://docs.google.com/spreadsheets/d/1-T7hc1ACV-c_nJPIRg0mIYjReAOzwZnYJbecW4SiFns/gviz/tq?tqx=out:csv";
+
+        const CONFIG = {
+            whatsapp: "5511947171294", // Apenas números
+            totalNumeros: 100
+        };
+
+        // =====================================================
+        
+        const grid = document.getElementById('rifa-grid');
+        const loader = document.getElementById('loading');
+        
+        // Link inicial do botão (será atualizado no clique)
+        document.getElementById('btn-garantir').href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent("Olá! Quero comprar um número da Rifa.")}`;
+
+        async function carregarRifa() {
+            try {
+                // Busca os dados da planilha
+                const response = await fetch(LINK_PLANILHA);
+                const data = await response.text();
+                
+                // Processa o texto CSV
+                const vendidos = {};
+                const linhas = data.split('\n');
+                
+                linhas.forEach(linha => {
+                    // Remove aspas que o CSV as vezes coloca
+                    const limpa = linha.replace(/"/g, '');
+                    const colunas = limpa.split(',');
+                    
+                    if (colunas.length >= 2) {
+                        const num = parseInt(colunas[0]); // Tenta ler o número
+                        const nome = colunas[1];
+                        
+                        // Se for um número válido, adiciona
+                        if (!isNaN(num) && nome) {
+                            vendidos[num] = nome.trim();
+                        }
+                    }
+                });
+
+                montarGrid(vendidos);
+
+            } catch (error) {
+                console.error(error);
+                alert("Não foi possível carregar a planilha. Verifique sua internet.");
+            } finally {
+                loader.style.display = 'none';
+            }
+        }
+
+        function montarGrid(vendidos) {
+            grid.innerHTML = "";
             
-            // Carregar configs do arquivo dados.js
-            document.getElementById('pix-display').innerText = CONFIG_RIFA.chavePix;
-            const btnGarantir = document.getElementById('btn-garantir');
-            btnGarantir.href = `https://wa.me/${CONFIG_RIFA.whatsapp}?text=${encodeURIComponent("Olá! Gostaria de comprar um número da Rifa de Natal.")}`;
-
-            const vendidos = CONFIG_RIFA.numerosVendidos;
-
-            // Gerar Grid
-            for (let i = 1; i <= totalNumeros; i++) {
+            for (let i = 1; i <= CONFIG.totalNumeros; i++) {
                 const div = document.createElement('div');
                 div.classList.add('number');
-
-                if (vendidos.hasOwnProperty(i)) {
-                    // Número VENDIDO
+                
+                if (vendidos[i]) {
+                    // VENDIDO
                     div.classList.add('sold');
                     div.innerText = i;
+                    
+                    // Cria Balão
+                    const tip = document.createElement('span');
+                    tip.classList.add('tooltip-text');
+                    tip.innerText = vendidos[i];
+                    div.appendChild(tip);
 
-                    // Criar Balão
-                    const tooltip = document.createElement('span');
-                    tooltip.classList.add('tooltip-text');
-                    tooltip.innerText = vendidos[i];
-                    div.appendChild(tooltip);
-
-                    // Clique no celular
+                    // Clique Mobile
                     div.onclick = function() {
                         document.querySelectorAll('.number').forEach(n => n.classList.remove('active'));
                         this.classList.add('active');
-                        setTimeout(() => this.classList.remove('active'), 2000);
+                        setTimeout(() => this.classList.remove('active'), 2500);
                     };
+
                 } else {
-                    // Número DISPONÍVEL
+                    // LIVRE
                     div.innerText = i;
                     div.onclick = function() {
-                        const msg = `Olá! Quero reservar o número ${i} da Rifa.`;
-                        const link = `https://wa.me/${CONFIG_RIFA.whatsapp}?text=${encodeURIComponent(msg)}`;
+                        const msg = `Olá! Quero reservar o número ${i}.`;
+                        const link = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
                         window.open(link, '_blank');
                     };
                 }
                 grid.appendChild(div);
             }
 
-            // Calcular Barra de Progresso
-            const qtdVendidos = Object.keys(vendidos).length;
-            const porcentagem = Math.floor((qtdVendidos / totalNumeros) * 100);
-            const barra = document.getElementById('progress-bar');
-            
-            // Animação
-            setTimeout(() => {
-                barra.style.width = porcentagem + '%';
-                barra.innerText = `${porcentagem}% Vendido`;
-            }, 100);
-        });
+            // Atualiza Barra
+            const total = Object.keys(vendidos).length;
+            const pct = Math.floor((total / CONFIG.totalNumeros) * 100);
+            const bar = document.getElementById('progress-bar');
+            bar.style.width = pct + '%';
+            bar.innerText = pct + '% Vendido';
+        }
+
+        // Inicia
+        carregarRifa();
     </script>
 </body>
 </html>
